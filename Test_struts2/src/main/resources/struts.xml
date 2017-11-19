@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <!-- 把它设置为开发模式，发布时要设置为false 为true 的 意思是修改struts.xml时候不用重启tomcat-->
+    <constant name="struts.devMode" value="true"></constant>
+
+    <!--动态 方法调用 ，默认关闭true-->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+
+    <package name="default" namespace="/" extends="struts-default">
+        <com.action name="userAction" class="com.action.loginAction">
+            <result name="success" type="">/welcome.jsp</result>
+        </com.action>
+    </package>
+    <!--分包 分空间-->
+    <package name="testmethod" namespace="/test" extends="struts-default">
+        <com.action name="list" class="com.action.TestDynamicMethod" method="ListTest">
+            <result name="list">/welcome.jsp</result>
+        </com.action>
+        <com.action name="update" class="com.action.TestDynamicMethod" method="UpdateTest">
+            <result name="update">/welcome.jsp</result>
+        </com.action>
+    </package>
+    <!--使用通配符实现 防注入-->
+    <package name="globbing" namespace="/globbing" extends="struts-default">
+        <com.action name="*_*" class="com.action.{1}" method="{2}">
+             <result name="{2}">/{2}.jsp</result>
+            <result name="success">/success.jsp</result>
+        </com.action>
+    </package>
+    <!--转发  重定向只需要将result中的type改为redirectAction-->
+    <package name="froward" namespace="/forward" extends="struts-default">
+        <com.action name="*_*" class="com.action.{1}" method="{2}">
+             <result type="redirectAction" name="methodOne">
+                <param name="actionName">methodTwo</param>
+                 <param name="namespace">/forward</param>
+             </result>
+        </com.action>
+        <com.action name="methodTwo" class="com.action.TestForword" method="methodTwo">
+            <result name="methodTwo">/list.jsp</result>
+        </com.action>
+    </package>
+
+    <!--自定义拦截器 模仿登陆拦截-->
+    <package name="inter" namespace="/inter" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="logininter" class="inter.LoginInter"></interceptor>   <!--指定自定义的拦截器-->
+            <interceptor-stack name="loginStack">                                    <!--定义拦截器栈-->
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+                <interceptor-ref name="logininter"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="loginStack"></default-interceptor-ref>
+
+        <global-results>
+            <result name="login">/jsp/login.jsp</result>                            <!--定义全局路径-->
+        </global-results>
+
+        <com.action name="login" class="com.action.TestInterAction">                        <!--登陆action-->
+               <result name="success">/jsp/welcome.jsp</result>
+        </com.action>
+
+        <com.action name="book" class="com.action.TestBookAction" >                         <!--内部访问action-->
+               <result name="success">/jsp/booksuccess.jsp</result>
+        </com.action>
+
+    </package>
+
+
+
+
+    <!--单文件上传-->
+    <package name="upload" namespace="/file" extends="struts-default">
+        <com.action name="uploadAction" class="com.action.TestFileAction" method="execute">
+            <param name="savePath">/upload</param>
+            <result name="success">/file/welcome.jsp</result>
+        </com.action>
+        
+        
+    </package>
+
+
+</struts>

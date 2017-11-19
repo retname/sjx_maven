@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="RBAC" />
+        <module name="Test_First" />
+        <module name="Test_ssh" />
+        <module name="Test_struts2" />
+        <module name="Test_Third" />
+        <module name="Test_two" />
+        <module name="TestTwo" />
+        <module name="zy_springboot" />
+        <module name="zy_springSecurity" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="RBAC" target="1.5" />
+      <module name="sjx_maven" target="1.5" />
+      <module name="Test_First" target="1.5" />
+      <module name="Test_second" target="1.5" />
+      <module name="Test_ssh" target="1.5" />
+      <module name="Test_SSH_Struts2" target="1.5" />
+      <module name="Test_struts2" target="1.5" />
+      <module name="Test_Third" target="1.5" />
+      <module name="Test_two" target="1.5" />
+      <module name="TestFirst" target="1.5" />
+      <module name="TestSjx" target="1.5" />
+      <module name="TestTwo" target="1.5" />
+      <module name="zy_springboot" target="1.7" />
+      <module name="zy_springSecurity" target="1.5" />
+      <module name="zy_struts2" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

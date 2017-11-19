@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tms.dao.INewsDao">
+
+
+    
+    <resultMap id="news" type="News">
+        <id column="sys_id" property="sys_id"></id>
+        <result column="sys_title" property="sys_title"></result>
+        <result column="sys_column" property="sys_column"></result>
+        <result column="sys_weight" property="sys_weight"></result>
+        <result column="sys_hits" property="sys_hits"></result>
+        <result column="sys_state" property="sys_state"></result>
+        <result column="sys_uptime" property="sys_uptime"></result>
+        <association property="userInfo" javaType="cn.tms.entity.UserInfo">
+               <id column="userid" property="userid"></id>
+               <result column="username" property="username"></result>
+        </association>
+
+        <association property="content" javaType="cn.tms.entity.Content">
+               <id column="c_id" property="c_id"></id>
+               <result column="c_name" property="c_name"></result>
+        </association>
+        <association property="state" javaType="cn.tms.entity.State">
+               <id column="sys_id" property="sys_id"></id>
+               <result column="sys_name" property="sys_name"></result>
+        </association>
+    </resultMap>
+
+
+
+    
+
+    <!--1.获取所有的内容-->
+    <select id="getAllNews" parameterType="map" resultMap="news">
+
+        select * from sys_news n,sys_content c,sys_state s,sys_userinfo u where
+        n.sys_admin = u.userid and n.sys_column=c.c_id and n.sys_state=s.sys_id
+        and n.sys_column=#{syscolumn} and n.sys_admin=#{userid}
+        <if test="cname!=null">
+             and sys_title LIKE CONCAT('%',#{cname},'%')
+        </if>
+        <if  test="state!=null">
+            and sys_state=#{state}
+        </if>
+        limit #{currentpage},#{pagesize}
+    </select>
+    
+    <!--2，获取 size-->
+    <select id="getNewSize" parameterType="map" resultType="java.lang.Integer">
+        select count(*) from sys_news where sys_column=#{syscolumn}
+
+            <if test="cname!=null and cname!=''">
+                and sys_title LIKE CONCAT('%',#{cname},'%')
+            </if>
+            <if test="state!=null and state!=''">
+                and sys_state=#{state}
+            </if>
+
+    </select>
+
+    <!--3,删除news-->
+    <delete id="delNews">
+        DELETE from sys_news where sys_id = #{0}
+    </delete>
+
+    <!--4，添加 news-->
+    <insert id="doAddNews" parameterType="cn.tms.entity.News">
+        insert into  sys_news (sys_column,sys_title,sys_weight,sys_color,sys_keywords,sys_file,sys_digest,sys_content,sys_uptime,sys_admin,sys_state)VALUES
+           (#{sys_column},#{sys_title},#{sys_weight},#{sys_color},#{sys_keywords},#{sys_file},#{sys_digest},#{sys_content},#{sys_uptime},#{sys_admin},#{sys_state})
+    </insert>
+
+    <!--根id查询news-->
+    <select id="getNewsById" resultType="News">
+        select * from  sys_news where sys_id=#{0}
+    </select>
+
+
+    <!--修改-->
+    <update id="upNewsById" parameterType="News">
+       UPDATE sys_news 	SET
+	`sys_title` = #{sys_title} ,
+	`sys_column` = #{sys_column} ,
+	`sys_weight` =#{sys_weight}  ,
+	`sys_state` = #{sys_state} ,
+	`sys_admin` = #{sys_admin} ,
+	`sys_uptime` =#{sys_uptime} ,
+	`sys_color` =#{sys_color}  ,
+	`sys_file` = #{sys_file} ,
+	`sys_keywords` = #{sys_keywords} ,
+	`sys_digest` = #{sys_digest} ,
+	`sys_content` =#{sys_content}
+
+	WHERE
+	`sys_id` = #{sys_id} ;
+    </update>
+
+</mapper>

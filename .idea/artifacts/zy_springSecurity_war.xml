@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="zy_springSecurity:war">
+    <output-path>$PROJECT_DIR$/zy_springSecurity/target</output-path>
+    <root id="archive" name="zy_springSecurity.war">
+      <element id="artifact" artifact-name="zy_springSecurity:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tms.dao.IContentDao">
+
+
+
+    <!--1.获取所有的内容-->
+    <select id="findAllContent" resultType="Content">
+        select * from sys_content
+    </select>
+
+
+    <!--2.获取国内新闻和国际新闻-->
+    <select id="findContentForCmb" resultType="Content">
+         select * from sys_content where sys_content.c_parent=2
+    </select>
+    
+    
+    
+</mapper>
